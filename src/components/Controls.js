@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { CustomSelect } from './CustomSelect.js'
 import { Search } from './Search.js'
 
-const option = [
+const options = [
   { value: 'Africa', label: 'Africa' },
   { value: 'America', label: 'America' },
   { value: 'Asia', label: 'Asia' },
@@ -22,18 +22,24 @@ const Wrapper = styled.div`
   }
 `
 
-export const Controls = () => {
+export const Controls = ({ onSearch }) => {
   const [search, setSearch] = useState('')
   const [region, setRegion] = useState('')
+
+  useEffect(() => {
+    const regionValue = region?.value || ''
+    onSearch(search, regionValue)
+  }, [search, region])
 
   return (
     <Wrapper>
       <Search search={search} setSearch={setSearch} />
       <CustomSelect
-        options={option}
+        options={options}
         placeholder='Filter by Region'
         isClearable
         isSearchable={false}
+        value={region}
         onChange={setRegion}
       />
     </Wrapper>
